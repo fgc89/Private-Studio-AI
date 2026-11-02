@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#080b14">
+<title>Private Studio AI</title>
+<style>
+body{margin:0;background:#080b14;color:#f4f6ff;font-family:Arial,sans-serif;padding:22px}
+header{padding:20px 0;border-bottom:1px solid #293247}
+h1{color:#70a5ff;font-size:27px}
+p{color:#b7c0d4;line-height:1.5}
+.card{background:#111827;border:1px solid #293247;border-radius:16px;padding:18px;margin:18px 0}
+button{background:#3478f6;color:white;border:0;padding:13px;border-radius:10px;font-weight:bold}
+textarea,input{box-sizing:border-box;width:100%;padding:13px;margin:10px 0;background:#080b14;color:white;border:1px solid #38445c;border-radius:9px}
+label{display:block;margin-top:12px}
+</style>
+</head>
+<body>
+<header>
+<h1>Private Studio AI</h1>
+<p>Tu espacio creativo privado</p>
+</header>
+<div class="card">
+<h2>🎨 Crear una escena</h2>
+<label>Estilo</label>
+<select id="style">
+<option>Elegante y cinematográfico</option>
+<option>Romántico y sensual, no explícito</option>
+<option>Moda y fotografía profesional</option>
+<option>Retrato artístico</option>
+</select>
+<label>Descripción</label>
+<textarea id="desc" rows="4" placeholder="Describe la escena que quieres crear..."></textarea>
+<button onclick="makePrompt()">Crear prompt</button>
+<textarea id="result" rows="5" placeholder="Tu prompt aparecerá aquí"></textarea>
+<button onclick="copyPrompt()">Copiar prompt</button>
+</div>
+<div class="card">
+<h2>🖼️ Tus imágenes</h2>
+<input id="files" type="file" accept="image/*" multiple>
+<div id="gallery"></div>
+<p>Las imágenes se muestran en esta sesión; no se guardan permanentemente.</p>
+</div>
+<div class="card">
+<h2>🔒 Privacidad</h2>
+<p>Esta versión es una demostración. No incluye cifrado ni generación real de imágenes o vídeos. No introduzcas información sensible.</p>
+</div>
+<script>
+function makePrompt(){
+const s=document.getElementById('style').value;
+const d=document.getElementById('desc').value.trim();
+document.getElementById('result').value=s+'. '+d+'. Iluminación cuidada, composición cinematográfica, alta calidad.';
+}
+function copyPrompt(){
+const t=document.getElementById('result');
+t.select();
+if(navigator.clipboard){navigator.clipboard.writeText(t.value).catch(()=>document.execCommand('copy'));}
+else document.execCommand('copy');
+}
+document.getElementById('files').addEventListener('change',function(){
+const g=document.getElementById('gallery');g.innerHTML='';
+Array.from(this.files).forEach(f=>{
+const img=document.createElement('img');
+img.src=URL.createObjectURL(f);
+img.style='width:100%;max-width:220px;margin:8px;border-radius:10px';
+g.appendChild(img);
+});
+});
+</script>
+</body>
+</html>
